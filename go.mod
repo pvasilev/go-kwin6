@@ -1,4 +1,4 @@
-module github.com/pvasilev/go-kwin6
+module go-kwin6
 
 go 1.23.0
 
