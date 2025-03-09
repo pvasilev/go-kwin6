@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/google/uuid"
-	"github.com/pvasilev/go-kwin6/go-kwin6"
+	"github.com/pvasilev/go-kwin6"
 	"log"
 	"sort"
 	"strings"

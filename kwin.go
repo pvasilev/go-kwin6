@@ -1,4 +1,4 @@
-// Package kwin implements utility routines for interacting with KWin composited window manager
+// Package go_kwin6 implements utility routines for interacting with KWin composited window manager
 package go_kwin6
 
 import (
