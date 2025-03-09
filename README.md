@@ -5,6 +5,8 @@ Golang **KWin6** interfacing example for enumerating and moving Plasma/Wayland w
 This project is an experiment in trying to interface the **KWin** window compositor with the goal of listing the registered 
 Screens, Desktops and Windows and manipulating the Windows placement/geometry.
 
+My OS is Arch Linux, running KDE Plasma 6 on Wayland graphics platform.
+
 I have a case where on my home/work machine I have 4 screens and some 20 virtual desktops, each one for a specific activity, with 
 relevant applications loaded and open there. Currently, Wayland does not support proper session storing/restoring, so each
 time I reboot the computer I need to manually start some 50-ish applications and move them to their relevant virtual 
