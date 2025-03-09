@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/google/uuid"
+	"github.com/pvasilev/go-kwin6/go-kwin6"
 	"log"
 	"sort"
 	"strings"
@@ -11,9 +12,9 @@ import (
 )
 
 // Example of KWin usage
-func printEnvironment(env Environment) {
+func printEnvironment(env go_kwin6.Environment) {
 	fmt.Printf("Screens %d, left to right:\n", len(env.Screens))
-	scr := lo.MapToSlice(env.Screens, func(key string, value Screen) Screen {
+	scr := lo.MapToSlice(env.Screens, func(key string, value go_kwin6.Screen) go_kwin6.Screen {
 		return value
 	})
 	sort.Slice(scr, func(i, j int) bool {
@@ -28,7 +29,7 @@ func printEnvironment(env Environment) {
 		fmt.Printf("Geometry: %+v\n", s.Geometry)
 	}
 	fmt.Printf("Desktops: %d\n", len(env.Desktops))
-	ds := lo.MapToSlice(env.Desktops, func(key uuid.UUID, value Desktop) Desktop {
+	ds := lo.MapToSlice(env.Desktops, func(key uuid.UUID, value go_kwin6.Desktop) go_kwin6.Desktop {
 		return value
 	})
 	sort.Slice(ds, func(i, j int) bool {
@@ -61,7 +62,7 @@ func printEnvironment(env Environment) {
 }
 
 func main() {
-	kw := NewKWin()
+	kw := go_kwin6.NewKWin()
 	env, err := kw.GetEnvironment()
 	if err != nil {
 		log.Fatal(err)

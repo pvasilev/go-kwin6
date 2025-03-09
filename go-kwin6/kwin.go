@@ -1,5 +1,5 @@
 // Package kwin implements utility routines for interacting with KWin composited window manager
-package main
+package go_kwin6
 
 import (
 	"bufio"
