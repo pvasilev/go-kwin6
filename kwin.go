@@ -529,3 +529,55 @@ func (k KWin) MoveWindowToDesktopsAndScreen(w Window, ds []Desktop, s Screen) er
 	}
 	return k.MoveWindowToScreen(w, s)
 }
+
+func (k KWin) MaximizeWindow(w Window) error {
+	return k.maximizeWindowHV(w, true, true)
+}
+
+func (k KWin) MaximizeWindowHorizontally(w Window) error {
+	return k.maximizeWindowHV(w, true, false)
+}
+
+func (k KWin) MaximizeWindowVertically(w Window) error {
+	return k.maximizeWindowHV(w, false, true)
+}
+
+func (k KWin) maximizeWindowHV(w Window, maximizeHorizontally, maximizeVertically bool) error {
+	script := `
+    windowId = "%s";
+    maximizeHorizontally = %v;
+    maximizeVertically = %v;
+    for (const window of workspace.windowList()) {
+        wid = window.internalId.toString().replace(/{/, "").replace(/}/, "");
+        if (wid === windowId) {
+            window.setMaximize(maximizeVertically, maximizeHorizontally);
+            break;
+        }
+    }`
+	command := fmt.Sprintf(script, w.Id, maximizeHorizontally, maximizeVertically)
+	output, err := k.loadExecuteAndGetOutput(command)
+	for _, s := range output {
+		fmt.Println(s)
+	}
+
+	return err
+}
+
+func (k KWin) MinimizeWindow(w Window) error {
+	script := `
+    windowId = "%s";
+    for (const window of workspace.windowList()) {
+        wid = window.internalId.toString().replace(/{/, "").replace(/}/, "");
+        if (wid === windowId) {
+            window.minimized = true;
+            break;
+        }
+    }`
+	command := fmt.Sprintf(script, w.Id)
+	output, err := k.loadExecuteAndGetOutput(command)
+	for _, s := range output {
+		fmt.Println(s)
+	}
+
+	return err
+}
