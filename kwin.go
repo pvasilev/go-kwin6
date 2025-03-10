@@ -24,11 +24,6 @@ KWin scripts are saved in temp folder as files, then loaded in KWin scripting ma
 const (
 	dbusSend   = "/usr/bin/dbus-send"
 	journalCtl = "/usr/bin/journalctl"
-
-	MaximizeMode = iota
-	MaximizeVertical
-	MAximizeHorizontal
-	MaximizeFull
 )
 
 type (
