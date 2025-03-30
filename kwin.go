@@ -60,22 +60,23 @@ type (
 	// Window is a struct that contains the most useful properties of KWin::Window object which represents a client
 	//program window
 	Window struct {
-		Id            string      `json:"id"`
-		Caption       string      `json:"caption"`
-		Pid           int         `json:"pid"`
-		CmdLine       string      `json:"cmdline"`
-		AppName       string      `json:"appname"`
-		X             float64     `json:"x"`
-		Y             float64     `json:"y"`
-		Width         float64     `json:"width"`
-		Height        float64     `json:"height"`
-		Fullscreen    bool        `json:"fullscreen"`
-		OnAllDesktops bool        `json:"onAllDesktops"`
-		KeepAbove     bool        `json:"keepAbove"`
-		KeepBelow     bool        `json:"keepBelow"`
-		Minimized     bool        `json:"minimized"`
-		DesktopIds    []uuid.UUID `json:"desktopIds"`
-		Desktops      []Desktop   `json:"desktops"`
+		Id               string      `json:"id"`
+		Caption          string      `json:"caption"`
+		Pid              int         `json:"pid"`
+		CmdLine          string      `json:"cmdline"`
+		AppName          string      `json:"appname"`
+		X                float64     `json:"x"`
+		Y                float64     `json:"y"`
+		Width            float64     `json:"width"`
+		Height           float64     `json:"height"`
+		Fullscreen       bool        `json:"fullscreen"`
+		OnAllDesktops    bool        `json:"onAllDesktops"`
+		KeepAbove        bool        `json:"keepAbove"`
+		KeepBelow        bool        `json:"keepBelow"`
+		Minimized        bool        `json:"minimized"`
+		DesktopIds       []uuid.UUID `json:"desktopIds"`
+		Desktops         []Desktop   `json:"desktops"`
+		DemandsAttention bool        `json:"demandsAttention"`
 	}
 	// Environment is a struct that contains all detected Screen, virtual Desktop and Window objects on the system
 	Environment struct {
@@ -372,6 +373,7 @@ func (k KWin) GetWindows(desktops map[uuid.UUID]Desktop) (map[uuid.UUID]Window, 
 		out += "\"keepAbove\": "+window.keepAbove+","
 		out += "\"keepBelow\": "+window.keepBelow+","
 		out += "\"minimized\": "+window.minimized+","
+    	out += "\"demandsAttention\": "+window.demandsAttention+","
         out += "\"desktopIds\": ["
         for (var i = 0; i < window.desktops.length; i++) {
             d = window.desktops[i];
@@ -530,14 +532,17 @@ func (k KWin) MoveWindowToDesktopsAndScreen(w Window, ds []Desktop, s Screen) er
 	return k.MoveWindowToScreen(w, s)
 }
 
+// MaximizeWindow will attempt to maximize window both horizontally and vertically
 func (k KWin) MaximizeWindow(w Window) error {
 	return k.maximizeWindowHV(w, true, true)
 }
 
+// MaximizeWindowHorizontally will attempt to maximize window horizontally
 func (k KWin) MaximizeWindowHorizontally(w Window) error {
 	return k.maximizeWindowHV(w, true, false)
 }
 
+// MaximizeWindowVertically will attempt to maximize window vertically
 func (k KWin) MaximizeWindowVertically(w Window) error {
 	return k.maximizeWindowHV(w, false, true)
 }
@@ -563,6 +568,7 @@ func (k KWin) maximizeWindowHV(w Window, maximizeHorizontally, maximizeVerticall
 	return err
 }
 
+// MinimizeWindow will attempt to minimize window
 func (k KWin) MinimizeWindow(w Window) error {
 	script := `
     windowId = "%s";
@@ -580,4 +586,40 @@ func (k KWin) MinimizeWindow(w Window) error {
 	}
 
 	return err
+}
+
+// SetWindowDemandsAttention will attempt to set the window state of demanding user attention to the specified value
+func (k KWin) SetWindowDemandsAttention(w Window, demandsAttention bool) error {
+	script := `
+		windowId = "%s";
+		for (const window of workspace.windowList()) {
+			var w = undefined;
+			for (const window of workspace.windowList()) {
+				wid = window.internalId.toString().replace(/{/, "").replace(/}/, "");
+				if (wid === windowId) {
+					w = window;
+					break;
+				}
+			}
+			if (w) {
+				w.demandsAttention = %s;
+			}
+		}`
+	command := fmt.Sprintf(script, w.Id, demandsAttention)
+	output, err := k.loadExecuteAndGetOutput(command)
+	for _, s := range output {
+		fmt.Println(s)
+	}
+
+	return err
+}
+
+// WindowDemandAttention will attempt to set the given window to demand user attention
+func (k KWin) WindowDemandAttention(w Window) error {
+	return k.SetWindowDemandsAttention(w, true)
+}
+
+// WindowUnDemandAttention will attempt to set the given window to not demand user attention even if it currently does
+func (k KWin) WindowUnDemandAttention(w Window) error {
+	return k.SetWindowDemandsAttention(w, false)
 }

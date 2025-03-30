@@ -1,5 +1,5 @@
 # go-kwin6
-Golang **KWin6** interfacing example for enumerating and moving Plasma/Wayland windows around [^x11]
+Golang **KWin6** interfacing example for enumerating and manipulting Plasma/Wayland windows around [^x11]
 
 
 This project is an experiment in trying to interface the **KWin** window compositor with the goal of listing the registered 
@@ -73,7 +73,7 @@ Mark the time at script end, we will need this later when we query the journal f
 et=$(date "+%Y-%m-%d %H:%M:%S.%N")
 ```
 
-Gather the KWing script execution output in journal, for the time script was running
+Gather the KWin script execution output in journal, for the time script was running
 ```bash
 journalctl QT_CATEGORY=js QT_CATEGORY=kwin_scripting -o cat --since "${st}" --until "${et}" --no-pager
 ```
@@ -82,6 +82,6 @@ This is my first attempt in both JavaScript and KWin interfacing, so the above m
 It may also stop working if KWin people change the KWin internals in future versions. For example, this 
 will **NOT** work on **KWin5** and below, because the internal object/method names are different.
 
-TODO: Add capabilities for setting window geometry/state. I don't seem to need that at this point though.
+TODO: Add capabilities for setting window geometry. I don't seem to need that at this point though.
 
 [^x11]: should also work in X11
