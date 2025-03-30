@@ -602,7 +602,7 @@ func (k KWin) SetWindowDemandsAttention(w Window, demandsAttention bool) error {
 				}
 			}
 			if (w) {
-				w.demandsAttention = %s;
+				w.demandsAttention = %t;
 			}
 		}`
 	command := fmt.Sprintf(script, w.Id, demandsAttention)
