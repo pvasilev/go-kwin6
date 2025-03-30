@@ -52,7 +52,8 @@ func printEnvironment(env go_kwin6.Environment) {
 		fmt.Printf("OnAllDesktops: %t; ", w.OnAllDesktops)
 		fmt.Printf("KeepAbove: %t; ", w.KeepAbove)
 		fmt.Printf("KeepBelow: %t; ", w.KeepBelow)
-		fmt.Printf("Minimized: %t\n", w.Minimized)
+		fmt.Printf("Minimized: %t; ", w.Minimized)
+		fmt.Printf("DemandsAttention: %t\n", w.DemandsAttention)
 		desktopNames := make([]string, len(w.Desktops))
 		for i, d := range w.Desktops {
 			desktopNames[i] = d.Name

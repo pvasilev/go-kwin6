@@ -21,4 +21,3 @@ for (var i = 0; i< workspace.screens.length; i++) {
     print(out)
 }
 print("#END SCRIPT");
-
