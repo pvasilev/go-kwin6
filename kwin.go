@@ -312,7 +312,6 @@ func (k KWin) GetScreens() (map[string]Screen, error) {
 		fmt.Printf("Error running script for screens list: %v\n", err)
 		return nil, err
 	}
-	fmt.Printf("Screens: %v\n", output)
 	outputMap := make(map[string]Screen)
 	for _, s := range output {
 		d := Screen{}
