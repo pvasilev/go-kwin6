@@ -6,12 +6,13 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"github.com/google/uuid"
 	"os"
 	"os/exec"
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/google/uuid"
 )
 
 /*
@@ -311,11 +312,13 @@ func (k KWin) GetScreens() (map[string]Screen, error) {
 		fmt.Printf("Error running script for screens list: %v\n", err)
 		return nil, err
 	}
+	fmt.Printf("Screens: %v\n", output)
 	outputMap := make(map[string]Screen)
 	for _, s := range output {
 		d := Screen{}
-		ss := strings.ReplaceAll(s, "js: ", "")
-		if err := json.Unmarshal([]byte(ss), &d); err != nil {
+		s = strings.ReplaceAll(s, "js: ", "")
+		s = strings.ReplaceAll(s, "undefined", "0")
+		if err := json.Unmarshal([]byte(s), &d); err != nil {
 			return nil, err
 		}
 		outputMap[d.Name] = d
