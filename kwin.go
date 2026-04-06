@@ -66,6 +66,8 @@ type (
 		Pid              int         `json:"pid"`
 		CmdLine          string      `json:"cmdline"`
 		AppName          string      `json:"appname"`
+		ResourceClass    string      `json:"resourceClass"`
+		ResourceName     string      `json:"resourceName"`
 		X                float64     `json:"x"`
 		Y                float64     `json:"y"`
 		Width            float64     `json:"width"`
@@ -366,6 +368,8 @@ func (k KWin) GetWindows(desktops map[uuid.UUID]Desktop) (map[uuid.UUID]Window, 
 		out += "\"id\": \""+window.internalId.toString().replace(/{/, "").replace(/}/, "")+"\","
 		out += "\"caption\": \""+window.caption.replace(/\"/g, "")+"\","
 		out += "\"pid\": "+window.pid+","
+		out += "\"resourceName\": \""+window.resourceName+"\","
+		out += "\"resourceClass\": \""+window.resourceClass+"\","
 		out += "\"x\": "+window.x+","
 		out += "\"y\": "+window.y+","
 		out += "\"width\": "+window.width+","
