@@ -2,11 +2,12 @@ package main
 
 import (
 	"fmt"
-	"github.com/google/uuid"
-	"github.com/pvasilev/go-kwin6"
 	"log"
 	"sort"
 	"strings"
+
+	"github.com/google/uuid"
+	"github.com/pvasilev/go-kwin6"
 
 	"github.com/samber/lo"
 )
@@ -47,6 +48,8 @@ func printEnvironment(env go_kwin6.Environment) {
 		fmt.Printf("\tPID: %d\n", w.Pid)
 		fmt.Printf("\tCmd: %s\n", w.CmdLine)
 		fmt.Printf("\tApp: %s\n", w.AppName)
+		fmt.Printf("\tResource Class: %s\n", w.ResourceClass)
+		fmt.Printf("\tResource Name: %s\n", w.ResourceName)
 		fmt.Printf("\tGeom: [X:%.2f,Y:%.2f,W:%.2f,H:%.2f]; ", w.X, w.Y, w.Width, w.Height)
 		fmt.Printf("Fullscreen: %t; ", w.Fullscreen)
 		fmt.Printf("OnAllDesktops: %t; ", w.OnAllDesktops)
